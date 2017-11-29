@@ -1,0 +1,8 @@
+B=GY
+A=GH
+A=a
+G=a
+H=b
+I=c
+Z=IA
+Y=HZ

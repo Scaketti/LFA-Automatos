@@ -1,0 +1,3 @@
+B=abcA
+A=ab
+A=a
