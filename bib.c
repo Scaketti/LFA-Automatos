@@ -125,11 +125,11 @@ void chomsky1(gramatica *gramatica){ //Aplica a segunda etapa de chomsky (Produ�
 	int i, j;
 
 	for(i = 0; i < numTotalRegra; i++){
-		if(strlen((*gramatica).corpo[i])>=2){
-			for(j = 0; j < strlen((*gramatica).corpo[i]); j++){
-				if((*gramatica).corpo[i][j] >= 97 && (*gramatica).corpo[i][j] <= 122){
-					insereRegra1(gramatica, (*gramatica).corpo[i][j]); //Insere nova regra
-					(*gramatica).corpo[i][j] = (*gramatica).corpo[i][j]-26; //coloca a variavel no lugar do terminal
+		if(strlen(gramatica->corpo[i])>=2){
+			for(j = 0; j < strlen(gramatica->corpo[i]); j++){
+				if((*gramatica).corpo[i][j] >= 97 && gramatica->corpo[i][j] <= 122){
+					insereRegra1(gramatica, gramatica->corpo[i][j]); //Insere nova regra
+					gramatica->corpo[i][j] = gramatica->corpo[i][j]-26; //coloca a variavel no lugar do terminal
 				}
 			}
 		}
@@ -140,13 +140,13 @@ void chomsky1(gramatica *gramatica){ //Aplica a segunda etapa de chomsky (Produ�
 void insereRegra1(gramatica *gramatica, char variavel){ //insere uma nova regra para a segunda etapa de chomsky
 	int i;
 	for(i = 0; i < numTotalRegra; i++) //verifica se ja foi criado a regra nova
-		if((*gramatica).cabeca[i][0] == variavel-26 ) return;
+		if(gramatica->cabeca[i][0] == variavel-26 ) return;
 
-	(*gramatica).cabeca[numTotalRegra][0] = variavel-26; //cria variável em relação ao terminal
-	(*gramatica).cabeca[numTotalRegra][1] = '\0';
+	gramatica->cabeca[numTotalRegra][0] = variavel-26; //cria variável em relação ao terminal
+	gramatica->cabeca[numTotalRegra][1] = '\0';
 
-	(*gramatica).corpo[numTotalRegra][0] = variavel; //copia o terminal para o corpo da regra
-	(*gramatica).corpo[numTotalRegra][1] = '\0';
+	gramatica->corpo[numTotalRegra][0] = variavel; //copia o terminal para o corpo da regra
+	gramatica->corpo[numTotalRegra][1] = '\0';
 
 	numTotalRegra++; //aumenta a quantidade de regras
 }
@@ -156,8 +156,8 @@ void chomsky2(gramatica *gramatica){ //Aplica a terceira etapa de chomsky (Produ
 
 	for(i = 0; i < numTotalRegra; i++){
 		while(strlen((*gramatica).corpo[i])>=3){
-			(*gramatica).corpo[i][strlen((*gramatica).corpo[i]) - 2] = insereRegra2(gramatica, &(*gramatica).corpo[i][strlen((*gramatica).corpo[i]) - 2]);
-			(*gramatica).corpo[i][strlen((*gramatica).corpo[i]) - 1] = '\0';
+			gramatica->corpo[i][strlen(gramatica->corpo[i]) - 2] = insereRegra2(gramatica, &(gramatica->corpo[i][strlen(gramatica->corpo[i]) - 2]));
+			gramatica->corpo[i][strlen(gramatica->corpo[i]) - 1] = '\0';
 		}
 	}
 
@@ -167,10 +167,10 @@ void chomsky2(gramatica *gramatica){ //Aplica a terceira etapa de chomsky (Produ
 }
 
 char insereRegra2(gramatica *gramatica, char *variavel){ //insere uma nova regra para a terceira etapa de chomsky
-	(*gramatica).cabeca[numTotalRegra][0] = ascii--;
-	(*gramatica).corpo[numTotalRegra][0] = variavel[0];
-	(*gramatica).corpo[numTotalRegra][1] = variavel[1];
-	(*gramatica).corpo[numTotalRegra][2] = '\0';
+	gramatica->cabeca[numTotalRegra][0] = ascii--;
+	gramatica->corpo[numTotalRegra][0] = variavel[0];
+	gramatica->corpo[numTotalRegra][1] = variavel[1];
+	gramatica->corpo[numTotalRegra][2] = '\0';
 	numTotalRegra++;
 
 	return (char) (ascii+1);
