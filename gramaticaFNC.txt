@@ -1,6 +1,6 @@
 B=GY
 A=GH
-A=a
+A=c
 G=a
 H=b
 I=c

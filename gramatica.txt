@@ -1,3 +1,4 @@
 B=abcA
 A=ab
-A=a
+A=c
+

@@ -1,5 +1,5 @@
 /*
- * Created by: Matheus Scaketti
+ * Created by: Matheus Scaketti and Enzo Salvadori
  * Date: 29/11/17
 */
 
@@ -66,17 +66,25 @@ int verificaGLC(gramatica gramatica){
 
 int verificaEtapa1(gramatica gramatica){ //Verifica se possui produções vazias(Simplificação)
 	int i;
+	printaGramatica(gramatica);
 	for(i = 0; i < numTotalRegra; i++)
-		if(gramatica.corpo[i][0] == '&') return 0;
+		if(gramatica.corpo[i][0] == '&') {
+			printf("Palavra vazia encontrada!\n");
+			return 0;
+	}
 	return 1;
 }
 
 int verificaEtapa2(gramatica gramatica){ //Verifica se possui produções que geram somente variaveis(Simplificação)
 	int i;
 	int valorAscii;
+	printaGramatica(gramatica);
 	for(i = 0; i < numTotalRegra; i++){
 		valorAscii = gramatica.corpo[i][0];
-		if(valorAscii >= 65 && valorAscii <= 90) return 0;
+		if(valorAscii >= 65 && valorAscii <= 90 && gramatica.corpo[i][1] == '\0'){
+			printf("Produção que gera somente uma variável encontrada!\n");
+			return 0;
+		}
 	}
 	return 1;
 }
@@ -85,9 +93,12 @@ int verificaEtapa3(gramatica gramatica){ //Verifica se possui produções improd
 	int i, j, k;
 	int contadorCabeca = 0;
 	int contadorCorpo = 0;
-
+	printaGramatica(gramatica);
 	for(i = 0; i < numTotalRegra; i++) //Variaveis que não geram regras (vazio)
-		if(gramatica.corpo[i][0] == '\0') return 0;
+		if(gramatica.corpo[i][0] == '\0'){
+			printf("Variável sem regra encontrada!\n");
+			return 0;
+		}
 
 	for(i = 0; i < numTotalRegra; i++){ //Variaveis inexistentes
 		for(j = 0; j < strlen(gramatica.corpo[i]); j++){ //Verifica as regras
@@ -97,7 +108,10 @@ int verificaEtapa3(gramatica gramatica){ //Verifica se possui produções improd
 				for(k = 0; k < numTotalRegra; k++){ //verifica se a variavel possui uma regra
 					if(gramatica.corpo[i][j] == gramatica.cabeca[k][0]) contadorCabeca++;
 				}
-				if(contadorCabeca == 0) return 0;
+				if(contadorCabeca == 0){
+					printf("Variável sem regra encontrada!\n");
+					return 0;
+				}
 			}
 		}
 		contadorCabeca = 0;
@@ -115,7 +129,10 @@ int verificaEtapa3(gramatica gramatica){ //Verifica se possui produções improd
 				}
 			}
 		}
-		if(contadorCorpo == 0) return 0; //verifica se a regra atual é atingível a partir do corpo
+		if(contadorCorpo == 0){
+			printf("Variável não atingivel encontrada!\n");
+			return 0; //verifica se a regra atual é atingível a partir do corpo
+		}
 		contadorCorpo = 0; //se atingir este ponto, zera a contador para prepara-lo para a próxima variavel
 	}
 	return 1;
@@ -177,9 +194,19 @@ char insereRegra2(gramatica *gramatica, char *variavel){ //insere uma nova regra
 }
 
 int simplificacao(gramatica gramatica){ //verifica se a gramática está pronta para ser simplificada
-	if(verificaEtapa1(gramatica))
-		if(verificaEtapa2(gramatica))
-			if(verificaEtapa3(gramatica)) return 1;
+	if(verificaGLC(gramatica)){
+		system("clear");
+		if(verificaEtapa1(gramatica)){
+			system("clear");
+			if(verificaEtapa2(gramatica)){
+				system("clear");
+				if(verificaEtapa3(gramatica)){
+					system("clear");
+					return 1;
+				}
+			}
+		}
+	}
 
 	return 0;
 }
